@@ -3,7 +3,7 @@ description: "Flutter assessment."
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=3.3.4 <4.0.0"
@@ -14,6 +14,7 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   http: ^1.2.2
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

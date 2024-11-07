@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/movie_provider.dart';
 import '../utils/contants.dart';
 
 class MovieSearchBar extends StatelessWidget {
@@ -15,27 +17,42 @@ class MovieSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppConstants.defaultPadding),
-      child: TextField(
-        controller: controller,
-        textInputAction: TextInputAction.search,
-        style: AppTextStyles.light.copyWith(fontSize: 16),
-        decoration: const InputDecoration(
-          hintText: AppConstants.searchHint,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.zero,
-            borderSide: BorderSide(color: Colors.black),
+    return Consumer<MovieProvider>(
+      builder: (context, movieProvider, _) {
+        return Padding(
+          padding: const EdgeInsets.all(AppConstants.defaultPadding),
+          child: TextField(
+            controller: controller,
+            textInputAction: TextInputAction.search,
+            style: AppTextStyles.light.copyWith(fontSize: 16),
+            decoration: InputDecoration(
+              hintText: AppConstants.searchHint,
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              suffixIcon: controller.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        controller.clear();
+                        movieProvider.clearSearch();
+                        onChanged();
+                      },
+                    )
+                  : const Icon(Icons.search),
+            ),
+            onChanged: (value) {
+              onChanged();
+            },
+            onSubmitted: onSubmitted,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.zero,
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          suffixIcon: Icon(Icons.search),
-        ),
-        onChanged: (_) => onChanged(),
-        onSubmitted: onSubmitted,
-      ),
+        );
+      },
     );
   }
 }
